@@ -10,9 +10,8 @@
     <SocialLinks />
     <Header />
     
-    <!-- Komponen Navigasi Baru -->
+    <!-- Komponen Navigasi dengan logika baru -->
     <PageNavigator 
-      v-if="showNavigator"
       :prev-route="prevRoute" 
       :next-route="nextRoute" 
     />
@@ -28,36 +27,37 @@
 <script setup>
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { routesInOrder } from './router.js'; // Impor urutan rute
+import { navigationSequence } from './router.js'; // Impor urutan navigasi
 
-// Impor komponen yang ada dan yang baru
+// Impor komponen
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
 import SocialLinks from './components/SocialLinks.vue'
-import PageNavigator from './components/PageNavigator.vue'; // Impor komponen navigasi
+import PageNavigator from './components/PageNavigator.vue';
 
 const route = useRoute();
 
-// Tentukan apakah navigator harus ditampilkan (tidak di halaman utama)
-const showNavigator = computed(() => route.path !== '/');
+// Cari tahu indeks halaman saat ini dalam urutan navigasi
+const currentIndex = computed(() => navigationSequence.indexOf(route.path));
 
-// Cari tahu indeks halaman saat ini
-const currentIndex = computed(() => routesInOrder.indexOf(route.path));
-
-// Tentukan rute sebelumnya berdasarkan indeks
+// Tentukan rute sebelumnya
+// Panah kiri hanya akan muncul jika halaman saat ini ada di urutan navigasi
+// dan bukan merupakan halaman pertama dalam urutan tersebut.
 const prevRoute = computed(() => {
   if (currentIndex.value > 0) {
-    return routesInOrder[currentIndex.value - 1];
+    return navigationSequence[currentIndex.value - 1];
   }
-  return null; // Tidak ada halaman sebelumnya
+  return null; // Tidak ada panah kiri
 });
 
-// Tentukan rute berikutnya berdasarkan indeks
+// Tentukan rute berikutnya
+// Panah kanan hanya akan muncul jika halaman saat ini ada di urutan navigasi
+// dan bukan merupakan halaman terakhir dalam urutan tersebut.
 const nextRoute = computed(() => {
-  if (currentIndex.value < routesInOrder.length - 1) {
-    return routesInOrder[currentIndex.value + 1];
+  if (currentIndex.value > -1 && currentIndex.value < navigationSequence.length - 1) {
+    return navigationSequence[currentIndex.value + 1];
   }
-  return null; // Tidak ada halaman berikutnya
+  return null; // Tidak ada panah kanan
 });
 </script>
 

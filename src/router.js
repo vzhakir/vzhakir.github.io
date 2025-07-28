@@ -4,7 +4,7 @@ import About from './views/About.vue';
 import Projects from './views/Projects.vue';
 import Contact from './views/Contact.vue';
 
-// Definisikan rute dalam bentuk array objek
+// Definisikan semua rute
 const routes = [
   { path: '/', name: 'Home', component: Home },
   { path: '/about', name: 'About', component: About },
@@ -12,8 +12,9 @@ const routes = [
   { path: '/contact', name: 'Contact', component: Contact },
 ];
 
-// Ekspor urutan path untuk digunakan di komponen lain
-export const routesInOrder = routes.map(route => route.path);
+// Definisikan urutan navigasi panah secara terpisah
+// Home ('/') tidak dimasukkan ke sini
+export const navigationSequence = ['/about', '/projects', '/contact'];
 
 const router = createRouter({
   history: createWebHistory(),
