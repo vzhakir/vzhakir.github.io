@@ -1,124 +1,111 @@
+<template>
+  <div id="app">
+    <div class="global-background-wrapper">
+      <video autoplay muted loop playsinline class="global-background-video">
+        <source src="/mybackground.mp4" type="video/mp4" />
+      </video>
+    </div>
+
+    <!-- Komponen yang sudah ada -->
+    <SocialLinks />
+    <Header />
+    
+    <!-- Komponen Navigasi dengan logika baru -->
+    <PageNavigator 
+      :prev-route="prevRoute" 
+      :next-route="nextRoute" 
+    />
+
+    <main :class="['main-content', { 'no-padding-top': $route.path === '/' }]">
+      <router-view /> 
+    </main>
+
+    <Footer v-if="$route.path !== '/'" />
+  </div>
+</template>
+
 <script setup>
-import { RouterLink, RouterView, useRoute } from 'vue-router';
 import { computed } from 'vue';
-// 1. Impor `navigationRoutes` dari router
-import { navigationRoutes } from './router.js'; 
-import Footer from './components/Footer.vue';
+import { useRoute } from 'vue-router';
+import { navigationSequence } from './router.js'; // Impor urutan navigasi
+
+// Impor komponen
+import Header from './components/Header.vue'
+import Footer from './components/Footer.vue'
+import SocialLinks from './components/SocialLinks.vue'
+import PageNavigator from './components/PageNavigator.vue';
 
 const route = useRoute();
 
-// Komputasi untuk mendapatkan nama rute saat ini
-const currentRouteName = computed(() => {
-  const matchedRoute = navigationRoutes.find(r => r.path === route.path);
-  return matchedRoute ? matchedRoute.name : '';
+// Cari tahu indeks halaman saat ini dalam urutan navigasi
+const currentIndex = computed(() => navigationSequence.indexOf(route.path));
+
+// Tentukan rute sebelumnya
+// Panah kiri hanya akan muncul jika halaman saat ini ada di urutan navigasi
+// dan bukan merupakan halaman pertama dalam urutan tersebut.
+const prevRoute = computed(() => {
+  if (currentIndex.value > 0) {
+    return navigationSequence[currentIndex.value - 1];
+  }
+  return null; // Tidak ada panah kiri
+});
+
+// Tentukan rute berikutnya
+// Panah kanan hanya akan muncul jika halaman saat ini ada di urutan navigasi
+// dan bukan merupakan halaman terakhir dalam urutan tersebut.
+const nextRoute = computed(() => {
+  if (currentIndex.value > -1 && currentIndex.value < navigationSequence.length - 1) {
+    return navigationSequence[currentIndex.value + 1];
+  }
+  return null; // Tidak ada panah kanan
 });
 </script>
 
-<template>
-  <header>
-    <div class="header-container">
-      <div class="logo">
-        <RouterLink to="/">
-          <span>{{ currentRouteName || 'MyPortfolio' }}</span>
-        </RouterLink>
-      </div>
-      <nav>
-        <RouterLink v-for="navRoute in navigationRoutes" :key="navRoute.name" :to="navRoute.path">
-          {{ navRoute.name }}
-        </RouterLink>
-      </nav>
-    </div>
-  </header>
+<style>
+/* 1. Tambahkan baris ini untuk mengimpor font dari Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
 
-  <main>
-    <RouterView v-slot="{ Component }">
-      <Transition name="fade" mode="out-in">
-        <component :is="Component" />
-      </Transition>
-    </RouterView>
-  </main>
-  
-  <Footer />
-</template>
-
-<style scoped>
-header {
-  background-color: #1a1a1a;
-  padding: 1rem 2rem;
-  position: fixed;
-  width: 100%;
-  top: 0;
-  z-index: 1000;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  /* 2. Ganti font-family ke font yang baru diimpor */
+  font-family: 'Poppins', sans-serif;
+  background-color: transparent;
+  color: white;
 }
 
-.header-container {
-  max-width: 1200px;
-  margin: 0 auto;
+#app {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logo a {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #00bcd4;
-  text-decoration: none;
-}
-
-nav {
-  display: flex;
-  gap: 1.5rem;
-}
-
-nav a {
-  text-decoration: none;
-  color: #e0e0e0;
-  font-weight: 500;
+  flex-direction: column;
+  min-height: 100vh;
   position: relative;
-  transition: color 0.3s ease;
 }
 
-nav a::after {
-  content: '';
-  position: absolute;
-  width: 100%;
-  transform: scaleX(0);
-  height: 2px;
-  bottom: -4px;
+/* Sisa dari style Anda tetap sama */
+.global-background-wrapper {
+  position: fixed;
+  top: 0;
   left: 0;
-  background-color: #00bcd4;
-  transform-origin: bottom right;
-  transition: transform 0.3s ease-out;
+  width: 100vw;
+  height: 100vh;
+  z-index: -2;
 }
 
-nav a:hover {
-  color: #00bcd4;
+.global-background-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.6);
 }
 
-nav a:hover::after {
-  transform: scaleX(1);
-  transform-origin: bottom left;
+.main-content {
+  flex-grow: 1;
+  position: relative;
+  padding-top: 90px;
 }
 
-/* Style untuk link yang aktif */
-nav a.router-link-exact-active {
-  color: #00bcd4;
-}
-
-main {
-  padding-top: 80px; /* Memberi ruang untuk header yang fixed */
-}
-
-/* Animasi Fade untuk Transisi Halaman */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
+.main-content.no-padding-top {
+  padding-top: 0;
 }
 </style>

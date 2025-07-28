@@ -1,22 +1,26 @@
-// src/router.js
-
 import { createRouter, createWebHistory } from 'vue-router';
+import Home from './views/Home.vue'; // Pastikan Anda memiliki file ini
 import Projects from './components/Projects.vue';
 import About from './components/About.vue';
 import Contact from './components/Contact.vue';
 
-// Definisikan dan ekspor rute untuk navigasi
-export const navigationRoutes = [
-  { path: '/', name: 'Home' },
-  { path: '/projects', name: 'Projects' },
-  { path: '/about', name: 'About' },
-  { path: '/contact', name: 'Contact' }
+// 1. Definisikan dan ekspor urutan navigasi yang dibutuhkan App.vue
+export const navigationSequence = [
+  '/',
+  '/projects',
+  '/about',
+  '/contact'
 ];
 
 const routes = [
   {
     path: '/',
     name: 'Home',
+    component: Home // Gunakan komponen Home untuk halaman utama
+  },
+  {
+    path: '/projects',
+    name: 'Projects',
     component: Projects
   },
   {
@@ -28,11 +32,6 @@ const routes = [
     path: '/contact',
     name: 'Contact',
     component: Contact
-  },
-  {
-    path: '/projects',
-    name: 'Projects',
-    component: Projects
   }
 ];
 
