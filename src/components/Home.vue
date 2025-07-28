@@ -8,7 +8,7 @@
       <section class="hero-section">
         <h1>Get to know about me.</h1>
         <button @click="navigateToAbout" class="scroll-button">
-          Learn More <i class="fas fa-arrow-down"></i>
+          Let's Go! <i class="fas fa-arrow-right"></i>
         </button>
       </section>
 
