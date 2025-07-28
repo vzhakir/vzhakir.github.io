@@ -1,66 +1,73 @@
 <script setup>
-import { onMounted } from 'vue';
-import anime from 'animejs';
+// Tidak perlu JavaScript tambahan untuk animasi ini.
+// Vue akan menangani semuanya melalui CSS.
 
-// Pastikan onMounted dijalankan agar animasi dimulai setelah komponen ter-render
-onMounted(() => {
-  // Animasi untuk judul halaman
-  anime({
-    targets: '.projects-title',
-    opacity: [0, 1],
-    translateY: [20, 0],
-    duration: 800,
-    easing: 'easeOutExpo'
-  });
-
-  // Animasi untuk setiap kartu proyek
-  anime({
-    targets: '.project-card',
-    opacity: [0, 1],          // Animasi dari transparan menjadi terlihat
-    translateY: [50, 0],      // Bergerak dari 50px di bawah ke posisi asli
-    duration: 1200,           // Durasi total animasi
-    delay: anime.stagger(200),// Setiap kartu akan muncul dengan jeda 200ms
-    easing: 'easeOutExpo'     // Jenis easing untuk efek yang lebih halus
-  });
-});
-
+// Data proyek bisa diletakkan di sini agar lebih rapi
+const projects = [
+  {
+    id: 1,
+    title: 'Pet Hotel & Grooming',
+    description: 'This is a website for a pet hotel and grooming service. Users can find information about services, see opening hours, and book appointments.',
+    image: '/project1.png',
+    link: 'https://github.com/russs743/prak-web-projek-akhir-kel-1'
+  },
+  {
+    id: 2,
+    title: 'Easy!Appointments',
+    description: 'Easy!Appointments is a highly customizable open-source web app that lets customers book appointments through a modern interface.',
+    image: '/project2.png',
+    link: 'https://github.com/russs743/Easy-Appointment-ProjectKDJK-Kel1P3'
+  }
+];
 </script>
 
 <template>
   <section class="projects-container">
     <h2 class="projects-title">My Projects</h2>
-    <ul>
-      <li class="project-card">
+
+    <TransitionGroup name="list" tag="ul">
+      <li 
+        v-for="(project, index) in projects" 
+        :key="project.id" 
+        :style="{ 'transition-delay': index * 150 + 'ms' }"
+      >
         <div class="project-media-wrapper">
-          <img src="/project1.png" alt="Project Preview: Pet Hotel & Grooming" class="project-preview" />
+          <img :src="project.image" :alt="'Project Preview: ' + project.title" class="project-preview" />
         </div>
         <div class="project-info">
-          <h3>Pet Hotel & Grooming</h3>
-          <p>This is a website for a pet hotel and grooming service. Users can find information about services, see opening hours, and book appointments.</p>
-          <a href="https://github.com/russs743/prak-web-projek-akhir-kel-1" class="view-project-button">VIEW PROJECT</a>
+          <h3>{{ project.title }}</h3>
+          <p>{{ project.description }}</p>
+          <a :href="project.link" class="view-project-button">VIEW PROJECT</a>
         </div>
       </li>
-      <li class="project-card">
-        <div class="project-media-wrapper">
-          <img src="/project2.png" alt="Project Preview: Easy!Appointments" class="project-preview" />
-        </div>
-        <div class="project-info">
-          <h3>Easy!Appointments</h3>
-          <p>Easy!Appointments is a highly customizable open-source web app that lets customers book appointments through a modern interface.</p>
-          <a href="https://github.com/russs743/Easy-Appointment-ProjectKDJK-Kel1P3" class="view-project-button">VIEW PROJECT</a>
-        </div>
-      </li>
-    </ul>
+    </TransitionGroup>
+
   </section>
 </template>
 
 <style scoped>
-/* Penting: Atur state awal elemen sebelum dianimasikan */
-.projects-title,
-.project-card {
+/* Kelas-kelas transisi ini digunakan oleh Vue secara otomatis
+  berdasarkan 'name' yang diberikan pada <TransitionGroup>.
+*/
+
+/* 1. State awal elemen saat akan masuk (enter) */
+.list-enter-from {
   opacity: 0;
+  transform: translateY(30px);
 }
 
+/* 2. State akhir elemen saat masuk */
+.list-enter-to {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 3. Menentukan properti transisi untuk animasi masuk */
+.list-enter-active {
+  transition: all 0.5s ease;
+}
+
+/* CSS untuk tata letak dan style kartu proyek */
 .projects-container {
   padding: 4rem 2rem;
   max-width: 1200px;
@@ -81,8 +88,7 @@ ul {
   gap: 2rem;
 }
 
-/* Anda bisa menyesuaikan style kartu proyek sesuai desain Anda */
-li.project-card {
+li {
   background-color: #2a2a2a;
   border-radius: 8px;
   overflow: hidden;
@@ -92,14 +98,14 @@ li.project-card {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-li.project-card:hover {
+li:hover {
     transform: translateY(-8px);
     box-shadow: 0 8px 20px rgba(0, 188, 212, 0.2);
 }
 
 .project-media-wrapper {
   width: 100%;
-  aspect-ratio: 16 / 9; /* Membuat gambar responsif */
+  aspect-ratio: 16 / 9;
 }
 
 .project-preview {
@@ -114,7 +120,7 @@ li.project-card:hover {
 
 h3 {
   margin: 0 0 0.5rem 0;
-  color: #00bcd4; /* Warna aksen */
+  color: #00bcd4;
 }
 
 p {
@@ -138,10 +144,9 @@ p {
   background-color: #0097a7;
 }
 
-/* Media query untuk tampilan di layar lebih besar */
 @media (min-width: 768px) {
   ul {
-    grid-template-columns: 1fr 1fr; /* 2 kolom di tablet */
+    grid-template-columns: 1fr 1fr;
   }
 }
 </style>
