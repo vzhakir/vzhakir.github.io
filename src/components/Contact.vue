@@ -7,7 +7,7 @@
     </div>
     <div class="contact-content">
       <h2>Contact</h2>
-      <p>Feel free to reach out via email: <a href="mailto:you@example.com">you@example.com</a></p>
+      <p>Feel free to reach out via email: <a href="mailto:zhakischool@gmail.com">Click here!</a></p>
       <a href="/CV_Vergiawan Zhaki Rasendria.pdf" download="CV_Vergiawan_Zhaki_Rasendria.pdf" class="download-button">Download CV</a>
     </div>
   </section>
