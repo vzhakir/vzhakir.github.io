@@ -6,30 +6,69 @@
       </video>
     </div>
 
+    <!-- Komponen yang sudah ada -->
     <SocialLinks />
     <Header />
+    
+    <!-- Komponen Navigasi Baru -->
+    <PageNavigator 
+      v-if="showNavigator"
+      :prev-route="prevRoute" 
+      :next-route="nextRoute" 
+    />
 
     <main :class="['main-content', { 'no-padding-top': $route.path === '/' }]">
-      <router-view /> </main>
+      <router-view /> 
+    </main>
 
     <Footer v-if="$route.path !== '/'" />
   </div>
 </template>
 
 <script setup>
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+import { routesInOrder } from './router.js'; // Impor urutan rute
+
+// Impor komponen yang ada dan yang baru
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
 import SocialLinks from './components/SocialLinks.vue'
+import PageNavigator from './components/PageNavigator.vue'; // Impor komponen navigasi
+
+const route = useRoute();
+
+// Tentukan apakah navigator harus ditampilkan (tidak di halaman utama)
+const showNavigator = computed(() => route.path !== '/');
+
+// Cari tahu indeks halaman saat ini
+const currentIndex = computed(() => routesInOrder.indexOf(route.path));
+
+// Tentukan rute sebelumnya berdasarkan indeks
+const prevRoute = computed(() => {
+  if (currentIndex.value > 0) {
+    return routesInOrder[currentIndex.value - 1];
+  }
+  return null; // Tidak ada halaman sebelumnya
+});
+
+// Tentukan rute berikutnya berdasarkan indeks
+const nextRoute = computed(() => {
+  if (currentIndex.value < routesInOrder.length - 1) {
+    return routesInOrder[currentIndex.value + 1];
+  }
+  return null; // Tidak ada halaman berikutnya
+});
 </script>
 
 <style>
-/* Global Styles untuk memastikan halaman mengisi viewport dan tanpa scroll */
+/* Global Styles Anda tetap sama */
 html, body {
   margin: 0;
   padding: 0;
   height: 100%;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: transparent; /* Default background jika video belum dimuat */
+  background-color: transparent;
   color: white;
 }
 
@@ -37,35 +76,31 @@ html, body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  position: relative; /* Penting untuk posisi absolut global-background-wrapper jika ingin absolute bukan fixed */
+  position: relative;
 }
 
-/* Styles untuk Video Background Global */
 .global-background-wrapper {
-  position: fixed; /* Fixed agar selalu di viewport dan tidak ikut scroll */
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100vw; /* Mengisi penuh lebar viewport */
-  height: 100vh; /* Mengisi penuh tinggi viewport */
-  z-index: -2; /* Pastikan di bawah semua konten lain */
+  width: 100vw;
+  height: 100vh;
+  z-index: -2;
 }
 
 .global-background-video {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: brightness(0.6); /* Gelapkan sedikit agar teks lebih terbaca */
+  filter: brightness(0.6);
 }
-
 
 .main-content {
   flex-grow: 1;
-  position: relative; /* Penting agar child bisa diposisikan relatif terhadapnya (misal Home.vue) */
-  /* Default padding-top untuk halaman lain agar tidak tertutup header */
-  padding-top: 90px; /* Ditingkatkan dari 80px untuk ruang aman */
+  position: relative;
+  padding-top: 90px;
 }
 
-/* CSS baru: Menghilangkan padding-top untuk halaman Home (agar Home bisa full screen) */
 .main-content.no-padding-top {
   padding-top: 0;
 }
