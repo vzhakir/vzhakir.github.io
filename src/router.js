@@ -1,17 +1,23 @@
 // src/router.js
 
 import { createRouter, createWebHistory } from 'vue-router';
-// 1. Ubah jalur import untuk menunjuk ke folder 'components'
-import Projects from './components/Projects.vue'; 
+import Projects from './components/Projects.vue';
 import About from './components/About.vue';
 import Contact from './components/Contact.vue';
+
+// Definisikan dan ekspor rute untuk navigasi
+export const navigationRoutes = [
+  { path: '/', name: 'Home' },
+  { path: '/projects', name: 'Projects' },
+  { path: '/about', name: 'About' },
+  { path: '/contact', name: 'Contact' }
+];
 
 const routes = [
   {
     path: '/',
     name: 'Home',
-    // 2. Gunakan komponen yang sudah diimpor (misalnya Projects) sebagai halaman utama
-    component: Projects 
+    component: Projects
   },
   {
     path: '/about',
