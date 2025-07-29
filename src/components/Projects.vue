@@ -1,152 +1,198 @@
-<script setup>
-// Tidak perlu JavaScript tambahan untuk animasi ini.
-// Vue akan menangani semuanya melalui CSS.
-
-// Data proyek bisa diletakkan di sini agar lebih rapi
-const projects = [
-  {
-    id: 1,
-    title: 'Pet Hotel & Grooming',
-    description: 'This is a website for a pet hotel and grooming service. Users can find information about services, see opening hours, and book appointments.',
-    image: '/project1.png',
-    link: 'https://github.com/russs743/prak-web-projek-akhir-kel-1'
-  },
-  {
-    id: 2,
-    title: 'Easy!Appointments',
-    description: 'Easy!Appointments is a highly customizable open-source web app that lets customers book appointments through a modern interface.',
-    image: '/project2.png',
-    link: 'https://github.com/russs743/Easy-Appointment-ProjectKDJK-Kel1P3'
-  }
-];
-</script>
-
 <template>
-  <section class="projects-container">
-    <h2 class="projects-title">My Projects</h2>
-
-    <TransitionGroup name="list" tag="ul">
-      <li 
-        v-for="(project, index) in projects" 
-        :key="project.id" 
-        :style="{ 'transition-delay': index * 150 + 'ms' }"
-      >
-        <div class="project-media-wrapper">
-          <img :src="project.image" :alt="'Project Preview: ' + project.title" class="project-preview" />
-        </div>
-        <div class="project-info">
-          <h3>{{ project.title }}</h3>
-          <p>{{ project.description }}</p>
-          <a :href="project.link" class="view-project-button">VIEW PROJECT</a>
-        </div>
-      </li>
-    </TransitionGroup>
-
+  <section id="projects" class="section">
+    <div class="projects-content">
+      <h2>Projects</h2>
+      <ul>
+        <li>
+          <div class="project-media-wrapper">
+            <img src="/project2.png" alt="Project Preview: Easy!Appointments" class="project-preview" />
+          </div>
+          <div class="project-info">
+            <h3>Easy!Appointments</h3>
+            <p>Easy!Appointments is a highly customizable open-source web app that lets customers book appointments through a modern interface.</p>
+            <a href="https://github.com/russs743/Easy-Appointment-ProjectKDJK-Kel1P3" class="view-project-button">VIEW PROJECT</a>
+          </div>
+        </li>
+        <li>
+          <div class="project-media-wrapper">
+            <img src="/project1.png" alt="Project Preview: Development of Variant Calling Pipeline for IPB ISNIP Website" class="project-preview" />
+          </div>
+          <div class="project-info">
+            <h3>IPB ISNIP Website</h3>
+            <p>Creating processing raw sequencing data through quality control and alignment to a reference genome and aligns raw sequencing FASTQ files to a reference genome</p>
+            <a href="https://github.com/vzhakir/CapstoneProject-10" class="view-project-button">VIEW PROJECT</a>
+          </div>
+        </li>
+      </ul>
+    </div>
   </section>
 </template>
 
 <style scoped>
-/* Kelas-kelas transisi ini digunakan oleh Vue secara otomatis
-  berdasarkan 'name' yang diberikan pada <TransitionGroup>.
-*/
-
-/* 1. State awal elemen saat akan masuk (enter) */
-.list-enter-from {
-  opacity: 0;
-  transform: translateY(30px);
-}
-
-/* 2. State akhir elemen saat masuk */
-.list-enter-to {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* 3. Menentukan properti transisi untuk animasi masuk */
-.list-enter-active {
-  transition: all 0.5s ease;
-}
-
-/* CSS untuk tata letak dan style kartu proyek */
-.projects-container {
+.section {
   padding: 4rem 2rem;
-  max-width: 1200px;
+  background-color: transparent;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  min-height: calc(100vh - 90px - 90px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.projects-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 800px;
   margin: 0 auto;
 }
 
-.projects-title {
+h2 {
   text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 3rem;
-  color: #E0E0E0;
+  margin-bottom: 2rem;
+  font-size: 2.2rem;
+  color: #00bcd4;
 }
 
 ul {
   list-style: none;
   padding: 0;
+  margin: 0 auto;
   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
+  justify-content: center;
 }
 
 li {
-  background-color: #2a2a2a;
+  background-color: rgba(255, 255, 255, 0.05);
   border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  padding: 0 1.5rem 1.5rem 1.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
   display: flex;
   flex-direction: column;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  min-height: 450px;
 }
 
 li:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 8px 20px rgba(0, 188, 212, 0.2);
+  transform: translateY(-5px);
 }
 
 .project-media-wrapper {
   width: 100%;
-  aspect-ratio: 16 / 9;
+  height: 200px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 
 .project-preview {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
 .project-info {
-  padding: 1.5rem;
+  padding-bottom: 1rem;
+  flex-grow: 1;
 }
 
 h3 {
-  margin: 0 0 0.5rem 0;
-  color: #00bcd4;
+  font-size: 1.5rem;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  color: #e0e0e0;
 }
 
 p {
-  font-size: 0.95rem;
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+  color: #ccc;
+  margin-bottom: 1rem;
+  text-align: justify;
+  max-height: 120px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+p::-webkit-scrollbar {
+  display: none;
 }
 
 .view-project-button {
-  display: inline-block;
-  padding: 0.75rem 1.5rem;
+  display: block;
+  width: calc(100% - 3rem);
+  padding: 0.8rem 1.5rem;
   background-color: #00bcd4;
-  color: #121212;
+  color: white;
+  text-align: left;
   text-decoration: none;
+  border-radius: 5px;
   font-weight: bold;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
+  font-size: 1rem;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  margin-top: auto;
 }
 
 .view-project-button:hover {
-  background-color: #0097a7;
+  opacity: 0.9;
+  transform: translateY(-2px);
 }
 
-@media (min-width: 768px) {
+@media (max-width: 768px) {
   ul {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
+  }
+
+  li {
+    padding: 0 1rem 1rem 1rem;
+    min-height: 400px;
+  }
+
+  .project-media-wrapper {
+    height: 180px;
+  }
+
+  .view-project-button {
+    width: calc(100% - 2rem);
+  }
+
+  p {
+    max-height: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .section {
+    padding: 3rem 1rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  .project-media-wrapper {
+    height: 150px;
+  }
+
+  h3 {
+    font-size: 1.3rem;
+  }
+
+  p {
+    font-size: 1rem;
+    max-height: 80px;
+  }
+
+  li {
+    min-height: 350px;
   }
 }
 </style>

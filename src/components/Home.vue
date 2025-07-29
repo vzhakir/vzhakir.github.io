@@ -1,9 +1,5 @@
 <template>
   <div class="background-wrapper">
-    <video autoplay muted loop playsinline class="background-video">
-      <source src="/mybackground.mp4" type="video/mp4" />
-    </video>
-
     <main class="content">
       <section class="hero-section">
         <h1>Get to know about me.</h1>

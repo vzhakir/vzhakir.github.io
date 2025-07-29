@@ -1,10 +1,5 @@
 <template>
   <section id="contact" class="section" data-aos="fade-up" data-aos-duration="1000">
-    <div class="background-wrapper">
-      <video autoplay muted loop playsinline class="background-video">
-        <source src="/mybackground.mp4" type="video/mp4" />
-      </video>
-    </div>
     <div class="contact-content">
       <h2>Contact</h2>
       <p>Feel free to reach out via email: <a href="mailto:zhakischool@gmail.com">Click here!</a></p>
@@ -14,11 +9,9 @@
 </template>
 
 <script setup>
-// Tidak ada perubahan skrip yang diperlukan
 </script>
 
 <style scoped>
-/* Gaya CSS tetap sama */
 .section {
   padding: 4rem 2rem;
   background-color: transparent;
@@ -32,23 +25,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.background-wrapper {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  z-index: -1;
-}
-
-.background-video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: brightness(0.6);
 }
 
 .contact-content {
